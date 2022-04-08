@@ -1,0 +1,44 @@
+body {
+	padding: 40px 120px;
+	background-color: #222;
+	color: #fff;
+	font-family: 'Montserrat', sans-serif;
+	font-size: 12px;
+	line-height: 1.333;
+	box-sizing: border-box;
+}
+.card {
+	display: inline-block;
+	width: 100%;
+	/* min-height: 600px; */
+	border-radius: 32px;
+	padding: 24px 34px;
+	background: rgba(37, 36, 51, 0.8);
+	/* background-color: #fff; */
+}
+.card__desc {
+	font-weight: 600;
+	padding-left: 90px;
+}
+
+.card__link {
+	color: #35B6FF;
+	text-decoration: underline;
+	transition: color .3s;
+}
+.card__link:hover {
+	color: #1B84D7;
+}
+
+.chart {
+	width: 100%;
+	min-height: 700px;
+	color: #302e3d;
+}
+
+.legend {
+	border: 1px solid #fff;
+}
+
+
+
