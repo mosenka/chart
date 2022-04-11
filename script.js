@@ -300,6 +300,7 @@ var series = chart.series.push(
 	})
 );
 
+
 var series2 = chart.series.push(
 	am5xy.SmoothedXLineSeries.new(root, {
 		name: "Difficulty",
@@ -311,10 +312,13 @@ var series2 = chart.series.push(
 			labelText: tooltipText(' K'),
 		}),
 		cursorOverStyle: 'pointer',
-		calculateAggregates: true
+		calculateAggregates: true,
+		stroke: am5.color("rgba(255, 255, 255, 0.7)"),
+		// strokeOpacity: .7
 	})
 
 );
+
 
 series.fills.template.setAll({
 	visible: true,
@@ -335,6 +339,8 @@ series.strokes.template.setAll({
 	strokeWidth: 4,
 
 });
+
+
 series2.strokes.template.setAll({
 	strokeWidth: 4,
 	stroke: am5.color("rgba(255, 255, 255, 0.7)"),
@@ -630,8 +636,6 @@ series2.data.setAll(arr);
 
 // for scrollbar
 sbseries.data.setAll(arr);
-
-
 
 
 // COLUMN CHART
