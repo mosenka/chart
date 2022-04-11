@@ -568,7 +568,7 @@ chart.topAxesContainer.children.push(am5.Rectangle.new(root, {
 	// black theme
 	fill: am5.color('#fff'),
 	// white theme
-	fill: am5.color('#000'),
+	// fill: am5.color('#000'),
 	fillOpacity: .12,
 	layer: 50,
 }));
