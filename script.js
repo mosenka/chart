@@ -1,3 +1,5 @@
+
+// LINE CHART 
 var root = am5.Root.new("chartdiv");
 
 // timezone
@@ -17,6 +19,7 @@ var chart = root.container.children.push(
 );
 
 
+
 let tooltipSettings = {
 	fill: am5.color('#33333F'),
 	fillOpacity: 0.8,
@@ -26,12 +29,12 @@ let tooltipSettings = {
 };
 
 // black theme
-// let tooltipText = (unit) => {
-// 	return "[fontFamily: Montserrat #fff bold]{valueX.formatDate('dd.MM.yyyy HH:mm')}[/]\n[fontFamily: Montserrat #85858c] {name} : [fontFamily: Montserrat #fff bold] {valueY}" + unit;
-// }
 let tooltipText = (unit) => {
-	return "[fontFamily: Montserrat #000 bold]{valueX.formatDate('dd.MM.yyyy HH:mm')}[/]\n[fontFamily: Montserrat #85858c] {name} : [fontFamily: Montserrat #000 bold] {valueY}" + unit;
+	return "[fontFamily: Montserrat #fff bold]{valueX.formatDate('dd.MM.yyyy HH:mm')}[/]\n[fontFamily: Montserrat #85858c] {name} : [fontFamily: Montserrat #fff bold] {valueY}" + unit;
 }
+// let tooltipText = (unit) => {
+// 	return "[fontFamily: Montserrat #000 bold]{valueX.formatDate('dd.MM.yyyy HH:mm')}[/]\n[fontFamily: Montserrat #85858c] {name} : [fontFamily: Montserrat #000 bold] {valueY}" + unit;
+// }
 
 class BlackTheme extends am5.Theme {
 	setupDefaultRules() {
@@ -39,6 +42,37 @@ class BlackTheme extends am5.Theme {
 			fontSize: 12,
 			fill: am5.color("#fff"),
 			opacity: 0.6,
+		});
+		
+		this.rule("Grid").setAll({
+			stroke: am5.color('#fff'),
+			strokeWidth: 0.5,
+			strokeGradient: am5.LinearGradient.new(root, {
+				stops: [{
+					opacity: 0.0001,
+				}, {
+					opacity: 0.6,
+				}, {
+					opacity: 0.0001,
+				}],
+				rotation: 90
+			})
+
+		});
+		this.rule("Grid", ["yGrid"]).setAll({
+			stroke: am5.color('#fff'),
+			strokeWidth: 0.5,
+			strokeGradient: am5.LinearGradient.new(root, {
+				stops: [{
+					opacity: 0.0001,
+				}, {
+					opacity: 0.6,
+				}, {
+					opacity: 0.0001,
+				}],
+				rotation: 0
+			})
+
 		});
 
 		this.rule("PointedRectangle", ["tooltip", "background"]).setAll({
@@ -59,7 +93,6 @@ class BlackTheme extends am5.Theme {
 			fillOpacity: 0,
 			opacity: 0
 		});
-	
 
 		this.rule('RoundedRectangle',  ['scrollbar', 'horizontal', 'xy', 'chart', 'thumb', 'horizontal']).setAll({
 			fill: am5.color("#33333F"),
@@ -110,12 +143,38 @@ class WhiteTheme extends am5.Theme {
 			fontSize: 12,
 			fill: am5.color("#1D1C28"),
 			opacity: 0.6,
+			fontFamily: 'Montserrat',
+			fontWeight: "400",
 		});
-
-		this.rule("Grid", ["xGrid"]).setAll({
-			stroke: am5.color("rgba(29, 28, 40, 0.6)"),
+		this.rule("Grid").setAll({
+			stroke: am5.color('#1D1C28'),
 			strokeWidth: 0.5,
-			opacity: 1,
+			strokeGradient: am5.LinearGradient.new(root, {
+				stops: [{
+					opacity: 0.0001,
+				}, {
+					opacity: 0.6,
+				}, {
+					opacity: 0.0001,
+				}],
+				rotation: 90
+			})
+
+		});
+		this.rule("Grid", ["yGrid"]).setAll({
+			stroke: am5.color('#1D1C28'),
+			strokeWidth: 0.5,
+			strokeGradient: am5.LinearGradient.new(root, {
+				stops: [{
+					opacity: 0.0001,
+				}, {
+					opacity: 0.6,
+				}, {
+					opacity: 0.0001,
+				}],
+				rotation: 0
+			})
+
 		});
 
 		this.rule("PointedRectangle", ["tooltip", "background"]).setAll({
@@ -190,7 +249,7 @@ var yAxis = chart.yAxes.push(
 		marginRight: 10,
 	  	renderer: am5xy.AxisRendererY.new(root, {}),
 	})
-  );
+);
 
 yAxis.get("renderer").grid.template.setAll({
 	visible: false
@@ -221,9 +280,9 @@ var xAxis = chart.xAxes.push(
 	})
 );
 
-xAxis.get("renderer").grid.template.setAll({
-	themeTags: ["xGrid"]
-});
+// xAxis.get("renderer").grid.template.setAll({
+// 	themeTags: ["xGrid"]
+// });
 
 var series = chart.series.push(
 	am5xy.SmoothedXLineSeries.new(root, {
@@ -242,20 +301,21 @@ var series = chart.series.push(
 );
 
 var series2 = chart.series.push(
-am5xy.SmoothedXLineSeries.new(root, {
-	name: "Difficulty",
-	xAxis: xAxis,
-	yAxis: yAxis2,
-	valueYField: "value2",
-	valueXField: "date",
-	tooltip: am5.Tooltip.new(root, {
-		labelText: tooltipText(' K'),
-	}),
-	cursorOverStyle: 'pointer',
-	calculateAggregates: true
-})
+	am5xy.SmoothedXLineSeries.new(root, {
+		name: "Difficulty",
+		xAxis: xAxis,
+		yAxis: yAxis2,
+		valueYField: "value2",
+		valueXField: "date",
+		tooltip: am5.Tooltip.new(root, {
+			labelText: tooltipText(' K'),
+		}),
+		cursorOverStyle: 'pointer',
+		calculateAggregates: true
+	})
 
 );
+
 series.fills.template.setAll({
 	visible: true,
 	fillGradient: am5.LinearGradient.new(root, {
@@ -284,20 +344,22 @@ series2.strokes.template.setAll({
 
 //set circle
 function getCircle(){
-var circle =  am5.Circle.new(root, {
-	radius: 4,
-	fill: am5.color("#fff"),
-	interactive: true,
-	opacity: 0
-});
-circle.states.create("default", {
-	opacity: 0
-});
+	var circle =  am5.Circle.new(root, {
+		radius: 6,
+		fill: am5.color("#fff"),
+		interactive: true,
+		stroke: am5.color('#35B6FF'),
+		strokeWidth: 4,
+		opacity: 0
+	});
+	circle.states.create("default", {
+		opacity: 0
+	});
 
-circle.states.create("hover", {
-	opacity: 1
-});
-return circle;
+	circle.states.create("hover", {
+		opacity: 1
+	});
+	return circle;
 }
 
 series.bullets.push(function() {
@@ -380,11 +442,9 @@ let sbseries = scrollbarX.chart.series.push(
 	})
 );
 
-
 scrollbarX.thumb.setAll({
 	opacity: 1,
-})
-
+});
 
   series.data.processor = am5.DataProcessor.new(root, {
 	numericFields: ["value1"],
@@ -396,6 +456,7 @@ scrollbarX.thumb.setAll({
 	dateFields: ["date"],
 	dateFormat: "HH:mm"
   });
+  
   sbseries.data.processor = am5.DataProcessor.new(root, {
 	numericFields: ["value1"],
 	dateFields: ["date"],
@@ -482,10 +543,13 @@ legend.markers.template.setAll({
 
 
 legend.labels.template.setAll({
-	themeTags: ["myLabel"],
+	// themeTags: ["myLabel"],
 	fontSize: 12,
-	fontWeight: "700",
-	fill: am5.color('#000'),
+	fontWeight: "600",
+	// black theme
+	fill: am5.color('#FFF'),
+	// white theme
+	// fill: am5.color('#000'),
 	fontFamily: 'Montserrat',
 	
 });
@@ -496,6 +560,7 @@ legend.labels.template.states.create("disabled", {
 
 
 chart.topAxesContainer.children.push(legend);
+
 // legend border bottom
 chart.topAxesContainer.children.push(am5.Rectangle.new(root, {
 	width: am5.percent(100),
@@ -514,8 +579,6 @@ chart.topAxesContainer.setAll({
 
 
 legend.data.setAll(chart.series.values);
-
-
 
 // set cursor
 chart.set("cursor", am5xy.XYCursor.new(root, {}));
@@ -554,29 +617,124 @@ function cursorMoved() {
 };
 
 root.setThemes([
-	// BlackTheme.new(root)
-	WhiteTheme.new(root)
+	BlackTheme.new(root)
+	// WhiteTheme.new(root)
 ]);
+
+
 
 let arr = getData();
 
 series.data.setAll(arr);
 series2.data.setAll(arr);
+
 // for scrollbar
 sbseries.data.setAll(arr);
+
+
+
+
+// COLUMN CHART
+
+var root2 = am5.Root.new("chartColumn");
+
+var chart2 = root2.container.children.push(
+	am5xy.XYChart.new(root2, {})
+);
+
+// y Axis for column series
+var yAxisCln = chart2.yAxes.push(
+	am5xy.ValueAxis.new(root2, {
+		numberFormat: "#.###'  CH'",
+		marginRight: 10,
+	  	renderer: am5xy.AxisRendererY.new(root2, {
+			themeTags: ["myAxisY"]
+		}),
+	})
+);
+
+yAxisCln.get("renderer").grid.template.setAll({
+	themeTags: ["yGrid"],
+	location: 1
+	
+});
+
+// x Axis for column series
+var xAxisCln = chart2.xAxes.push(
+	am5xy.DateAxis.new(root2, {
+		baseInterval: { timeUnit: "day", count: 1 },
+		gridIntervals: [
+			{ timeUnit: "day", count: 1 },
+		  ],
+		dateField: "date2",
+		renderer: am5xy.AxisRendererX.new(root2, {
+			cellStartLocation: 0.1,
+			cellEndLocation: 0.9
+		})
+	})
+);
+
+xAxisCln.get("dateFormats")["day"] = "dd.MM";
+xAxisCln.get("periodChangeDateFormats")["day"] = "dd.MM";
+
+xAxisCln.get("renderer").grid.template.setAll({
+	location: 0.5,
+});
+
+var clnSeries = chart2.series.push(
+	am5xy.ColumnSeries.new(root2, {
+		name: "Pool Hashrate2",
+		xAxis: xAxisCln,
+		yAxis: yAxisCln,
+		valueYField: "value1",
+		valueXField: "date2",
+		cursorOverStyle: 'pointer',
+	})
+)
+clnSeries.columns.template.setAll({
+	cornerRadiusTL: 4,
+	cornerRadiusTR: 4,
+	strokeOpacity: 0,
+	fillGradient: am5.LinearGradient.new(root2, {
+		stops: [{
+			color: am5.color('rgba(53, 182, 255, 1)'),
+			opacity: 0.35,
+			offset: 0.17
+		  }, {
+			color: am5.color('rgba(27, 132, 215, 1)'),
+			opacity: 0,
+			offset: 0.98
+		  }],
+		  rotation: 90
+	})
+});
+
+clnSeries.data.processor = am5.DataProcessor.new(root2, {
+	numericFields: ["value1"],
+	dateFields: ["date2"],
+	dateFormat: "yyyy-MM-dd"
+  });
+
+root2.setThemes([
+	BlackTheme.new(root2)
+	// WhiteTheme.new(root2)
+]);
+
+clnSeries.data.setAll(arr);
+
 
 
 function getData(){
 	let arr = [];
 	
-	for (let i = 0; i < 24; i++) {
+	for (let i = 0; i < 8; i++) {
 		
 		let data = i < 8 ? new Date(2022, 3, 5, 7, i*8).getTime() : new Date(2022, 3, 5, 8, i*8).getTime();
+		let data2 = new Date(2022, 3, i+1).getTime();
 		// let test = new Date(2022, 3, 5, 8, i*8);
 		let value1 =  getRandomArbitary(22, 26);
 		let value2 = getRandomInt(70, 140);
-		arr.push({'date': data, 'value1': value1, 'value2': value2});
-		
+		arr.push({'date': data, 'value1': value1, 'value2': value2, 'date2': data2});
 	}
 	return arr;
 }
