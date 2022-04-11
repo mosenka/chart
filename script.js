@@ -12,7 +12,6 @@ let intervalUnit = 'minute';
 var shape = "M7.82378 0.425105C7.66184 0.311535 7.43625 0.326682 7.29128 0.470547L7.29125 0.470581L2.89976 4.83287L1.00878 2.96869C1.00874 2.96865 1.00871 2.96862 1.00867 2.96858C0.846635 2.80789 0.583972 2.80793 0.421982 2.96869C0.259585 3.12985 0.259454 3.39132 0.422073 3.55229L0.422223 3.55244L2.60764 5.70663L7.82378 0.425105Z"
 
 
-
 var chart = root.container.children.push(
 	am5xy.XYChart.new(root, {})
 );
@@ -26,14 +25,164 @@ let tooltipSettings = {
 	strokeWidth: 4,
 };
 
-
+// black theme
+// let tooltipText = (unit) => {
+// 	return "[fontFamily: Montserrat #fff bold]{valueX.formatDate('dd.MM.yyyy HH:mm')}[/]\n[fontFamily: Montserrat #85858c] {name} : [fontFamily: Montserrat #fff bold] {valueY}" + unit;
+// }
 let tooltipText = (unit) => {
-	return "[fontFamily: Montserrat #fff bold]{valueX.formatDate('dd.MM.yyyy HH:mm')}[/]\n[fontFamily: Montserrat #85858c] {name} : [fontFamily: Montserrat #fff bold] {valueY}" + unit;
+	return "[fontFamily: Montserrat #000 bold]{valueX.formatDate('dd.MM.yyyy HH:mm')}[/]\n[fontFamily: Montserrat #85858c] {name} : [fontFamily: Montserrat #000 bold] {valueY}" + unit;
 }
 
+class BlackTheme extends am5.Theme {
+	setupDefaultRules() {
+		this.rule("AxisLabel").setAll({
+			fontSize: 12,
+			fill: am5.color("#fff"),
+			opacity: 0.6,
+		});
 
-var myTheme = am5.Theme.new(root);
+		this.rule("PointedRectangle", ["tooltip", "background"]).setAll({
+			fill: am5.color('#33333F'),
+			fillOpacity: 0.8,
+			stroke: am5.color('#000'),
+			strokeOpacity: 0.04,
+			strokeWidth: 4,
+		});
+		this.rule("Tooltip", ["tooltip"]).setAll({
+			getFillFromSprite: false,
+			getStrokeFromSprite: false,
+			layout: root.horizontalLayout,
 
+		});
+
+		this.rule("RoundedRectangle", ['scrollbar', 'horizontal', 'main', 'background']).setAll({
+			fillOpacity: 0,
+			opacity: 0
+		});
+	
+
+		this.rule('RoundedRectangle',  ['scrollbar', 'horizontal', 'xy', 'chart', 'thumb', 'horizontal']).setAll({
+			fill: am5.color("#33333F"),
+			fillOpacity: 0.6,
+		});
+		this.rule('RoundedRectangle',  ['scrollbar', 'horizontal', 'xy', 'chart', 'thumb', 'horizontal']).states.create("hover", {
+			fill: am5.color("#33333F"),
+			fillOpacity: 0.6,
+			opacity: 1
+		})
+		
+		this.rule("Graphics", ['overlay']).setAll({
+			visible: false
+		});
+
+		this.rule('RoundedRectangle',  ['scrollbar', 'horizontal', 'xy', 'chart']).setAll({
+			layer: 6
+		});
+
+		this.rule('RoundedRectangle',  ['scrollbar', 'xy', 'chart', 'resize', 'button', 'horizontal']).setAll({
+				fill: am5.color("#33333F"),
+				fillOpacity: 1,
+				layer: 40,
+				opacity: 1,
+				stroke: am5.color("#FFF"),
+				strokeOpacity: .1,
+				height: 40,
+				width: 40,
+				cornerRadiusBR: 8,
+				cornerRadiusTR: 8,
+				cornerRadiusTL: 8,
+				cornerRadiusBL: 8
+		});
+		this.rule('RoundedRectangle',  ['scrollbar', 'xy', 'chart', 'resize', 'button', 'horizontal']).states.create("hover", {
+			fill: am5.color("#35B6FF"),
+		});
+
+		this.rule('Graphics',  ['scrollbar', 'xy', 'chart', 'resize', 'button', 'icon']).setAll({
+			layer: 50,
+			stroke: am5.color("#fff")
+		})
+	 
+	}
+}
+class WhiteTheme extends am5.Theme {
+	setupDefaultRules() {
+		this.rule("AxisLabel").setAll({
+			fontSize: 12,
+			fill: am5.color("#1D1C28"),
+			opacity: 0.6,
+		});
+
+		this.rule("Grid", ["xGrid"]).setAll({
+			stroke: am5.color("rgba(29, 28, 40, 0.6)"),
+			strokeWidth: 0.5,
+			opacity: 1,
+		});
+
+		this.rule("PointedRectangle", ["tooltip", "background"]).setAll({
+			fill: am5.color('#FFFFFF'),
+			fillOpacity: 1,
+			stroke: am5.color('#000'),
+			strokeOpacity: 0.04,
+			strokeWidth: 4,
+		});
+		this.rule("Tooltip", ["tooltip"]).setAll({
+			getFillFromSprite: false,
+			getStrokeFromSprite: false,
+			layout: root.horizontalLayout,
+
+		});
+
+		this.rule("RoundedRectangle", ['scrollbar', 'horizontal', 'main', 'background']).setAll({
+			fillOpacity: 0,
+			opacity: 0
+		});
+	
+
+		this.rule('RoundedRectangle',  ['scrollbar', 'horizontal', 'xy', 'chart', 'thumb', 'horizontal']).setAll({
+			fill: am5.color("#33333F"),
+			fillOpacity: 0.08,
+		});
+		this.rule('RoundedRectangle',  ['scrollbar', 'horizontal', 'xy', 'chart', 'thumb', 'horizontal']).states.create("hover", {
+			fill: am5.color("#33333F"),
+			fillOpacity: 0.06,
+			opacity: 1,
+		})
+		
+		this.rule("Graphics", ['overlay']).setAll({
+			visible: false
+		});
+
+		this.rule('RoundedRectangle',  ['scrollbar', 'horizontal', 'xy', 'chart']).setAll({
+			layer: 6
+		});
+
+		this.rule('RoundedRectangle',  ['scrollbar', 'xy', 'chart', 'resize', 'button', 'horizontal']).setAll({
+				fill: am5.color("#EDEDF0"),
+				fillOpacity: 1,
+				layer: 40,
+				opacity: 1,
+				stroke: am5.color("rgba(29, 28, 40, 1)"),
+				strokeOpacity: .04,
+				height: 40,
+				width: 40,
+				cornerRadiusBR: 8,
+				cornerRadiusTR: 8,
+				cornerRadiusTL: 8,
+				cornerRadiusBL: 8
+		});
+		this.rule('RoundedRectangle',  ['scrollbar', 'xy', 'chart', 'resize', 'button', 'horizontal']).states.create("hover", {
+			fill: am5.color("#35B6FF"),
+		});
+
+		this.rule('Graphics',  ['scrollbar', 'xy', 'chart', 'resize', 'button', 'icon']).setAll({
+			layer: 50,
+			stroke: am5.color("#1D1C28")
+		});
+		
+	 
+	}
+	
+}
 
 var yAxis = chart.yAxes.push(
 	am5xy.ValueAxis.new(root, {
@@ -53,9 +202,8 @@ var yAxis2 = chart.yAxes.push(
 		marginRight: 10,
 		syncWithAxis: yAxis,
 	  	renderer: am5xy.AxisRendererY.new(root, {
-			opposite: true
-		  }),
-		
+			opposite: true,
+		}),
 	})
   );
 
@@ -63,15 +211,8 @@ yAxis2.get("renderer").grid.template.setAll({
 	visible: false
 });
 
-
-
 var xAxis = chart.xAxes.push(
 	am5xy.DateAxis.new(root, {
-		// groupData: true,
-		// groupIntervals: [
-		// 	{ timeUnit: "hour", count: 1 },
-		// 	{ timeUnit: "minute", count: 8 }
-		// ],
 		baseInterval: { timeUnit: intervalUnit ||  'minute', count: intervalCount },
 		dateField: "date",
 		renderer: am5xy.AxisRendererX.new(root, {
@@ -80,35 +221,9 @@ var xAxis = chart.xAxes.push(
 	})
 );
 
-
 xAxis.get("renderer").grid.template.setAll({
-		strokeWidth: 0.5,
-		stroke: am5.color('#fffff'),
-		// strokeGradient: am5.LinearGradient.new(root, {
-		// 	stops: [{
-		// 			brighten: 0.01
-		// 		}, {
-		// 			brighten: 1
-		// 		}, {
-		// 			brighten: 0.01
-		// 		} 
-		// 	],
-		// 	rotation: 270
-		// })
-
-	}
-);
-
-
-
-
-myTheme.rule("AxisLabel").setAll({
-	fill: "rgba(255, 255, 255, 0.6)",
-	fontSize: "12px",
-  });
-
-
-
+	themeTags: ["xGrid"]
+});
 
 var series = chart.series.push(
 	am5xy.SmoothedXLineSeries.new(root, {
@@ -119,10 +234,7 @@ var series = chart.series.push(
 	valueXField: "date",
 	stroke: am5.color('#35B6FF'),
 	tooltip: am5.Tooltip.new(root, {
-	labelText: tooltipText(' CH'),
-		getFillFromSprite: false,
-		getStrokeFromSprite: false,
-		layout: root.horizontalLayout
+		labelText: tooltipText(' CH'),
 	}),
 	cursorOverStyle: 'pointer',
 	calculateAggregates: true
@@ -136,29 +248,15 @@ am5xy.SmoothedXLineSeries.new(root, {
 	yAxis: yAxis2,
 	valueYField: "value2",
 	valueXField: "date",
-	stroke: am5.color('rgba(255, 255, 255, 0.5)'),
-	strokeWidth: 6,
 	tooltip: am5.Tooltip.new(root, {
-	labelText: tooltipText(' K'),
-	getFillFromSprite: false,
-	getStrokeFromSprite: false,
-	layout: root.horizontalLayout
+		labelText: tooltipText(' K'),
 	}),
 	cursorOverStyle: 'pointer',
 	calculateAggregates: true
 })
 
 );
-
-
-let tooltip = series.getTooltip();
-let tooltip2 = series2.getTooltip();
-
-tooltip.get("background").setAll(tooltipSettings);
-tooltip2.get("background").setAll(tooltipSettings);
-
-
-  series.fills.template.setAll({
+series.fills.template.setAll({
 	visible: true,
 	fillGradient: am5.LinearGradient.new(root, {
 		stops: [{
@@ -172,15 +270,19 @@ tooltip2.get("background").setAll(tooltipSettings);
 		  }],
 		  rotation: 90
 		})
-  });
-  series.strokes.template.set("strokeWidth", 4);
-  series2.strokes.template.setAll({
-	  strokeWidth: 4,
-	  stroke: am5.color("rgba(255, 255, 255, 0.7)"),
-	  strokeOpacity: .4
-	});
+});
+series.strokes.template.setAll({
+	strokeWidth: 4,
+
+});
+series2.strokes.template.setAll({
+	strokeWidth: 4,
+	stroke: am5.color("rgba(255, 255, 255, 0.7)"),
+	strokeOpacity: .4
+});
 
 
+//set circle
 function getCircle(){
 var circle =  am5.Circle.new(root, {
 	radius: 4,
@@ -234,51 +336,15 @@ var scrollbarX = am5xy.XYChartScrollbar.new(root, {
 	minHeight: 20,
 	marginTop: 30,
 	marginBottom: 20,
+	opacity: 1,
+	interactiveChildren: true,
+	start: 0,
+	end: 0.5,
 });
 
 chart.set("scrollbarX", scrollbarX);
- 
-scrollbarX.get("background").setAll({
-	fill: am5.color("#33333F"),
-});
-
-scrollbarX.overlay.setAll({
-	interactive: false,
-	fill: am5.color("#191820"),
-	opacity: 1
-})
 
 
-scrollbarX.thumb.setAll({
-	fill: am5.color("#33333F"),
-	fillOpacity: 0,
-});
-
-scrollbarX.startGrip.setAll({
-	interactive: true,
-});
-
-let buttonsStyle = {
-	fill: am5.color("#33333F"),
-	stroke: am5.color("#FFF"),
-	strokeOpacity: .1,
-	height: 40,
-	width: 40,
-	cornerRadiusBR: 8,
-	cornerRadiusTR: 8,
-	cornerRadiusTL: 8,
-	cornerRadiusBL: 8
-}
-
-scrollbarX.startGrip.get("background").setAll(buttonsStyle);
-scrollbarX.endGrip.get("background").setAll(buttonsStyle);
-
-scrollbarX.startGrip.get("background").states.create("hover", {}).setAll({
-	fill: am5.color("#35B6FF"),
-});
-scrollbarX.endGrip.get("background").states.create("hover", {}).setAll({
-	fill: am5.color("#35B6FF"),
-});
 
 let sbxAxis = scrollbarX.chart.xAxes.push(
 	am5xy.DateAxis.new(root, {
@@ -291,7 +357,6 @@ let sbxAxis = scrollbarX.chart.xAxes.push(
 		renderer: am5xy.AxisRendererX.new(root, {
 			opposite: false,
 			strokeOpacity: 0,
-			fillOpacity: 0
 		})
 	})
 );
@@ -300,20 +365,25 @@ let sbyAxis = scrollbarX.chart.yAxes.push(
 	am5xy.ValueAxis.new(root, {
 		renderer: am5xy.AxisRendererY.new(root, {
 			strokeOpacity: 0,
-			fillOpacity: 0
 		})
 	})
 );
 
 let sbseries = scrollbarX.chart.series.push(
-am5xy.LineSeries.new(root, {
-	xAxis: sbxAxis,
-	yAxis: sbyAxis,
-	valueYField: "value1",
-	valueXField: "date",
-	visible: false
-})
+	am5xy.LineSeries.new(root, {
+		xAxis: sbxAxis,
+		yAxis: sbyAxis,
+		valueYField: "value1",
+		valueXField: "date",
+		visible: false,
+	
+	})
 );
+
+
+scrollbarX.thumb.setAll({
+	opacity: 1,
+})
 
 
   series.data.processor = am5.DataProcessor.new(root, {
@@ -398,7 +468,10 @@ legend.markerRectangles.template.setAll({
 
 legend.markerRectangles.template.states.create("disabled", {
 	fillGradient: false,
-	fill: am5.color('#fff'),
+	// black theme
+	// fill: am5.color('#fff'),
+	// white theme
+	fill: am5.color('#1D1C28'),
 	fillOpacity: .08,
 });
 
@@ -407,13 +480,16 @@ legend.markers.template.setAll({
 	width: 10
 });
 
+
 legend.labels.template.setAll({
+	themeTags: ["myLabel"],
 	fontSize: 12,
-	fontWeight: "600",
-	fill: am5.color('#fff'),
+	fontWeight: "700",
+	fill: am5.color('#000'),
 	fontFamily: 'Montserrat',
 	
 });
+
 legend.labels.template.states.create("disabled", {
 	fillOpacity: .4,
 });
@@ -424,7 +500,10 @@ chart.topAxesContainer.children.push(legend);
 chart.topAxesContainer.children.push(am5.Rectangle.new(root, {
 	width: am5.percent(100),
 	height: 1,
+	// black theme
 	fill: am5.color('#fff'),
+	// white theme
+	fill: am5.color('#000'),
 	fillOpacity: .12,
 	layer: 50,
 }));
@@ -432,7 +511,11 @@ chart.topAxesContainer.children.push(am5.Rectangle.new(root, {
 chart.topAxesContainer.setAll({
 	minWidth: am5.percent(100),
 })
+
+
 legend.data.setAll(chart.series.values);
+
+
 
 // set cursor
 chart.set("cursor", am5xy.XYCursor.new(root, {}));
@@ -452,29 +535,34 @@ cursor.events.on("cursormoved", cursorMoved);
 
 function cursorMoved() {
 	for(var i = 0; i < previousBulletSprites.length; i++) {
-	  previousBulletSprites[i].unhover();
+		if(previousBulletSprites[i]) {
+			previousBulletSprites[i].unhover();
+		}
 	}
 	previousBulletSprites = [];
 	chart.series.each(function(series) {
 	  var dataItem = series.get("tooltip").dataItem;
 	  if (dataItem) {
-			var bulletSprite = dataItem.bullets[0].get("sprite");
-			bulletSprite.hover();
+			var bulletSprite = dataItem.bullets ? dataItem.bullets[0].get("sprite") : false;
+			// var bulletSprite = dataItem.bullets[0].get("sprite");
+			if(bulletSprite) {
+				bulletSprite.hover();
+			}
 			previousBulletSprites.push(bulletSprite);
 		}
 	});
 };
 
 root.setThemes([
-	myTheme
+	// BlackTheme.new(root)
+	WhiteTheme.new(root)
 ]);
-
 
 let arr = getData();
 
-
 series.data.setAll(arr);
 series2.data.setAll(arr);
+// for scrollbar
 sbseries.data.setAll(arr);
 
 
