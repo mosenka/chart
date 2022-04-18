@@ -1,6 +1,6 @@
-
 // LINE CHART 
 var root = am5.Root.new("chartdiv");
+
 
 // timezone
 root.utc = true;
@@ -74,6 +74,17 @@ class BlackTheme extends am5.Theme {
 			})
 
 		});
+		this.rule("Graphics", ['line', 'series', 'secondSeries', 'stroke']).setAll({
+			stroke: am5.color("rgba(255, 255, 255, 0.7)"),
+			strokeWidth: 4,
+			strokeOpacity: 0.4
+		});
+
+		this.rule("SmoothedXLineSeries", ['secondSeries']).setAll({
+			fill: am5.color("#FF0000"),
+			opacity: .4
+
+		});
 
 		this.rule("PointedRectangle", ["tooltip", "background"]).setAll({
 			fill: am5.color('#33333F'),
@@ -133,12 +144,24 @@ class BlackTheme extends am5.Theme {
 		this.rule('Graphics',  ['scrollbar', 'xy', 'chart', 'resize', 'button', 'icon']).setAll({
 			layer: 50,
 			stroke: am5.color("#fff")
-		})
+		});
+
+		this.rule("Label", ['myLabel']).setAll({
+			fontSize: 12,
+			fontWeight: "600",
+			fill: am5.color('#FFF'),
+			fontFamily: 'Montserrat',
+			
+		});
+		this.rule("Label", ['myLabel']).states.create("disabled", {
+			fillOpacity: .4,
+		});
 	 
 	}
 }
 class WhiteTheme extends am5.Theme {
 	setupDefaultRules() {
+
 		this.rule("AxisLabel").setAll({
 			fontSize: 12,
 			fill: am5.color("#1D1C28"),
@@ -175,6 +198,18 @@ class WhiteTheme extends am5.Theme {
 				rotation: 0
 			})
 
+		});
+
+		
+		this.rule("Graphics", ['line', 'series', 'secondSeries', 'stroke']).setAll({
+			strokeWidth: 4,
+			strokeOpacity: 0.32,
+			opacity: .4
+		});
+
+		this.rule("SmoothedXLineSeries", ['secondSeries']).setAll({
+			fill: am5.color("#1D1C28"),
+			stroke: am5.color("#1D1C28"),
 		});
 
 		this.rule("PointedRectangle", ["tooltip", "background"]).setAll({
@@ -237,11 +272,37 @@ class WhiteTheme extends am5.Theme {
 			layer: 50,
 			stroke: am5.color("#1D1C28")
 		});
+
+
+		this.rule("Label", ['myLabel']).setAll({
+			fontSize: 12,
+			fontWeight: "600",
+			// black theme
+			// fill: am5.color('#FFF'),
+			// white theme
+			fill: am5.color('#000'),
+			fontFamily: 'Montserrat',
+			
+		});
+		this.rule("Label", ['myLabel']).states.create("disabled", {
+			fillOpacity: .4,
+		});
+
+		
 		
 	 
 	}
 	
 }
+
+
+
+
+root.setThemes([
+	// BlackTheme.new(root)
+	WhiteTheme.new(root)
+]);
+
 
 var yAxis = chart.yAxes.push(
 	am5xy.ValueAxis.new(root, {
@@ -286,17 +347,17 @@ var xAxis = chart.xAxes.push(
 
 var series = chart.series.push(
 	am5xy.SmoothedXLineSeries.new(root, {
-	name: "Pool Hashrate",
-	xAxis: xAxis,
-	yAxis: yAxis,
-	valueYField: "value1",
-	valueXField: "date",
-	stroke: am5.color('#35B6FF'),
-	tooltip: am5.Tooltip.new(root, {
-		labelText: tooltipText(' CH'),
-	}),
-	cursorOverStyle: 'pointer',
-	calculateAggregates: true
+		name: "Pool Hashrate",
+		xAxis: xAxis,
+		yAxis: yAxis,
+		valueYField: "value1",
+		valueXField: "date",
+		stroke: am5.color('#35B6FF'),
+		tooltip: am5.Tooltip.new(root, {
+			labelText: tooltipText(' CH'),
+		}),
+		cursorOverStyle: 'pointer',
+		calculateAggregates: true
 	})
 );
 
@@ -304,6 +365,7 @@ var series = chart.series.push(
 var series2 = chart.series.push(
 	am5xy.SmoothedXLineSeries.new(root, {
 		name: "Difficulty",
+		themeTags: ["secondSeries"],
 		xAxis: xAxis,
 		yAxis: yAxis2,
 		valueYField: "value2",
@@ -313,7 +375,8 @@ var series2 = chart.series.push(
 		}),
 		cursorOverStyle: 'pointer',
 		calculateAggregates: true,
-		stroke: am5.color("rgba(255, 255, 255, 0.7)"),
+		// themes: [WhiteTheme.new(root)],
+		// stroke: am5.color("rgba(255, 255, 255, 0.7)"),
 		// strokeOpacity: .7
 	})
 
@@ -341,11 +404,13 @@ series.strokes.template.setAll({
 });
 
 
-series2.strokes.template.setAll({
-	strokeWidth: 4,
-	stroke: am5.color("rgba(255, 255, 255, 0.7)"),
-	strokeOpacity: .4
-});
+// series2.strokes.template.setAll({
+	// themeTags: ["secondSeries"],
+	// stroke: am5.color("#FF0000"),
+	// strokeWidth: 4,
+	// stroke: am5.color("rgba(255, 255, 255, 0.7)"),
+	// strokeOpacity: .4
+// });
 
 
 //set circle
@@ -382,20 +447,6 @@ series2.bullets.push(function() {
 	});
 })
 
-//avg line
-var rangeDataItem = yAxis.makeDataItem({
-	value: 24
-});
-
-var range = yAxis.createAxisRange(rangeDataItem);
-
-rangeDataItem.get("grid").setAll({
-	stroke: am5.color('#FF9900'),
-	strokeDasharray: [5],
-	strokeWidth: 1,
-  	strokeOpacity: 1,
-	visible: true
-})
 
 // scrollbar
 var scrollbarX = am5xy.XYChartScrollbar.new(root, {
@@ -416,6 +467,7 @@ chart.set("scrollbarX", scrollbarX);
 
 let sbxAxis = scrollbarX.chart.xAxes.push(
 	am5xy.DateAxis.new(root, {
+		zoomX: false,
 		groupData: true,
 		groupIntervals: [
 			{ timeUnit: "hour", count: 1 },
@@ -431,6 +483,7 @@ let sbxAxis = scrollbarX.chart.xAxes.push(
   
 let sbyAxis = scrollbarX.chart.yAxes.push(
 	am5xy.ValueAxis.new(root, {
+		zoomY: false,
 		renderer: am5xy.AxisRendererY.new(root, {
 			strokeOpacity: 0,
 		})
@@ -444,9 +497,10 @@ let sbseries = scrollbarX.chart.series.push(
 		valueYField: "value1",
 		valueXField: "date",
 		visible: false,
-	
 	})
 );
+
+chart.zoomOutButton.set("forceHidden", true);
 
 scrollbarX.thumb.setAll({
 	opacity: 1,
@@ -549,20 +603,21 @@ legend.markers.template.setAll({
 
 
 legend.labels.template.setAll({
-	// themeTags: ["myLabel"],
-	fontSize: 12,
-	fontWeight: "600",
+	themeTags: ["myLabel"],
+	// fontSize: 12,
+	// fontWeight: "600",
 	// black theme
-	fill: am5.color('#FFF'),
+	// fill: am5.color('#FFF'),
 	// white theme
 	// fill: am5.color('#000'),
-	fontFamily: 'Montserrat',
+	// fontFamily: 'Montserrat',
 	
 });
 
-legend.labels.template.states.create("disabled", {
-	fillOpacity: .4,
-});
+
+// legend.labels.template.states.create("disabled", {
+// 	fillOpacity: .4,
+// });
 
 
 chart.topAxesContainer.children.push(legend);
@@ -622,10 +677,7 @@ function cursorMoved() {
 	});
 };
 
-root.setThemes([
-	BlackTheme.new(root)
-	// WhiteTheme.new(root)
-]);
+
 
 
 
@@ -636,6 +688,7 @@ series2.data.setAll(arr);
 
 // for scrollbar
 sbseries.data.setAll(arr);
+
 
 
 // COLUMN CHART
@@ -720,8 +773,8 @@ clnSeries.data.processor = am5.DataProcessor.new(root2, {
   });
 
 root2.setThemes([
-	BlackTheme.new(root2)
-	// WhiteTheme.new(root2)
+	// BlackTheme.new(root2)
+	WhiteTheme.new(root2)
 ]);
 
 clnSeries.data.setAll(arr);
