@@ -29,12 +29,12 @@ let tooltipSettings = {
 };
 
 // black theme
-let tooltipText = (unit) => {
-	return "[fontFamily: Montserrat #fff bold]{valueX.formatDate('dd.MM.yyyy HH:mm')}[/]\n[fontFamily: Montserrat #85858c] {name} : [fontFamily: Montserrat #fff bold] {valueY}" + unit;
-}
 // let tooltipText = (unit) => {
-// 	return "[fontFamily: Montserrat #000 bold]{valueX.formatDate('dd.MM.yyyy HH:mm')}[/]\n[fontFamily: Montserrat #85858c] {name} : [fontFamily: Montserrat #000 bold] {valueY}" + unit;
+// 	return "[fontFamily: Montserrat #fff bold]{valueX.formatDate('dd.MM.yyyy HH:mm')}[/]\n[fontFamily: Montserrat #85858c] {name} : [fontFamily: Montserrat #fff bold] {valueY}" + unit;
 // }
+let tooltipText = (unit) => {
+	return "[fontFamily: Montserrat #000 bold]{valueX.formatDate('dd.MM.yyyy HH:mm')}[/]\n[fontFamily: Montserrat #85858c] {name} : [fontFamily: Montserrat #000 bold] {valueY}" + unit;
+}
 
 class BlackTheme extends am5.Theme {
 	setupDefaultRules() {
